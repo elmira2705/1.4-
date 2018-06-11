@@ -6,21 +6,20 @@ if ($json === false) {
 }
 
 if (empty($json)) {
-        echo 'json пуст';
-    }
-
-$objArray = (array) json_decode($json, true)
-if ($object === null) {
+        exit ('json пуст');
+    } else {
+$objArray = (array) json_decode($json, true);
+if ($objArray === null) {
   exit('Ошибка декодирования json');
 }
-
+}
 
 $temperature = $objArray['main']['temp'];
+$temperature_res = (int)($temperature/17);
 $pressure = $objArray['main']['pressure'];
 $humidity = $objArray['main']['humidity'];
 $weather_pic = $objArray['weather'][0]['main'];
 
-$temperature_res = (int)($temperature/17);
 
 if ($temperature_res > 0){
     $temp = '+' . $temperature_res;
@@ -30,7 +29,7 @@ if ($temperature_res > 0){
     $temp = '-' . $temperature_res;
 }
 
-if ($weather_pic == 'Cloud') {
+if ($weather_pic == 'Clouds') {
     $picture = print 'Облачно'.'<img src="http://openweathermap.org/img/w/04n.png"><br>';
 }   elseif ($weather_pic == "Rain") {
     $picture = 'Дождь'.'<img src="http://openweathermap.org/img/w/09d.png"><br>';
@@ -40,30 +39,58 @@ if ($weather_pic == 'Cloud') {
     $picture = 'Ясно'.'<img src="http://openweathermap.org/img/w/01d.png"><br>';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
   <head>
      <meta charset="UTF-8">
      <title>1.4. Стандартные функции</title>
+     <style>
+       @import url('https://fonts.googleapis.com/css?family=Lato:400,700,900|Merriweather:400,700,700i,900');
+
+* {
+ box-sizing: boreder-box;
+ margin: 0;
+}
+
+body {
+  font-size: 62.5%;
+}
+
+td {
+  font: normal 600 14px Roboto, Arial, sans-serif;
+  color: #505050;
+}
+
+h3 {
+  font: 700 24px/1.4 Lato,Arial,sans-serif;
+  color: #212121;
+}
+
+.col1 {
+  padding: 5px;
+  border: 1px solid #505050;
+  background: #ddd;
+}
+
+.col2 {
+  padding: 5px;
+  border: 1px solid #505050;
+}
+    </style>
   </head>
   <body>
-    <h3>Погода в Алматы на сегодня: </h3>
+    <h3> Погода в Алматы на сегодня: </h3>
     <table>
-      <thead>
-        <tr>
-          <td>Температура</td>
-          <td>Влажность</td>
-          <td>Атмосферное давление</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><i><?php echo $temp . 'C°'?></i></td>
-          <td><i><?php echo $humidity . '%'; ?></i></td>
-          <td><i><?php echo $pressure . 'мм рт. ст.'; ?></i></td>
-        </tr>
-      </tbody>
+    <td class="col1">Температура</td><td class="col1"><i><?php echo $temp . 'C°'?></i></td>
+   </tr>
+   <tr>
+    <td class="col2">Влажность</td><td class="col2"><i><?php echo $humidity . '%'; ?></i></td>
+   </tr>
+   <tr>
+    <td class="col1">Атмосферное давление</td><td class="col1"><?php echo $pressure . 'мм рт. ст.'; ?></i></td>
+    <td><?php echo $picture; ?></td>
+   </tr>
     </table>
-    <?php echo $picture; ?><
   </body>
 </html>
